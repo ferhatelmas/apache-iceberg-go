@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - Iceberg Golang</title>
+        <title>Concurrent Writes - Iceberg Golang</title>
 
 
         <!-- Custom HTML head -->
@@ -123,7 +123,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html" class="active">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="install.html">Install</a></li><li class="chapter-item expanded "><a href="getting-started.html">Getting Started</a></li><li class="chapter-item expanded "><a href="configuration.html">Configuration</a></li><li class="chapter-item expanded "><a href="cli.html">CLI</a></li><li class="chapter-item expanded "><a href="api.html">API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="row-filter-syntax.html">Row Filter Syntax</a></li><li class="chapter-item expanded "><a href="expression-dsl.html">Expression DSL</a></li><li class="chapter-item expanded "><a href="concurrent-writes.html">Concurrent Writes</a></li><li class="chapter-item expanded "><a href="metrics-reporting.html">Metrics Reporting</a></li></ol></li><li class="chapter-item expanded "><a href="feature-status.html">Feature Status</a></li><li class="chapter-item expanded affix "><li class="part-title">Developer Guide</li><li class="chapter-item expanded "><a href="contributing.html">Contributing</a></li><li class="chapter-item expanded "><a href="community.html">Community</a></li><li class="chapter-item expanded "><a href="glossary.html">Glossary</a></li><li class="chapter-item expanded affix "><li class="part-title">Releases</li><li class="chapter-item expanded "><a href="releases.html">Releases</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="verify-release.html">Verify a release</a></li><li class="chapter-item expanded "><a href="how-to-release.html">How to release</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Ecosystem</li><li class="chapter-item expanded "><a href="ecosystem.html">Other Iceberg implementations</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="install.html">Install</a></li><li class="chapter-item expanded "><a href="getting-started.html">Getting Started</a></li><li class="chapter-item expanded "><a href="configuration.html">Configuration</a></li><li class="chapter-item expanded "><a href="cli.html">CLI</a></li><li class="chapter-item expanded "><a href="api.html">API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="row-filter-syntax.html">Row Filter Syntax</a></li><li class="chapter-item expanded "><a href="expression-dsl.html">Expression DSL</a></li><li class="chapter-item expanded "><a href="concurrent-writes.html" class="active">Concurrent Writes</a></li><li class="chapter-item expanded "><a href="metrics-reporting.html">Metrics Reporting</a></li></ol></li><li class="chapter-item expanded "><a href="feature-status.html">Feature Status</a></li><li class="chapter-item expanded affix "><li class="part-title">Developer Guide</li><li class="chapter-item expanded "><a href="contributing.html">Contributing</a></li><li class="chapter-item expanded "><a href="community.html">Community</a></li><li class="chapter-item expanded "><a href="glossary.html">Glossary</a></li><li class="chapter-item expanded affix "><li class="part-title">Releases</li><li class="chapter-item expanded "><a href="releases.html">Releases</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="verify-release.html">Verify a release</a></li><li class="chapter-item expanded "><a href="how-to-release.html">How to release</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Ecosystem</li><li class="chapter-item expanded "><a href="ecosystem.html">Other Iceberg implementations</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -185,7 +185,7 @@
                         <a href="https://github.com/apache/iceberg-go" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/apache/iceberg-go/edit/main/website/src/introduction.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/apache/iceberg-go/edit/main/website/src/concurrent-writes.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -232,34 +232,78 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
 -->
-<h1 id="iceberg-go"><a class="header" href="#iceberg-go">Iceberg Go</a></h1>
-<p>Apache Iceberg Go is a Go-native implementation of <a href="https://iceberg.apache.org/">Apache Iceberg</a>, the open table format for analytic datasets. Read and write Iceberg tables from Go services and tooling without a JVM.</p>
-<p><a href="https://pkg.go.dev/github.com/apache/iceberg-go"><img src="https://pkg.go.dev/badge/github.com/apache/iceberg-go.svg" alt="Go Reference" /></a></p>
-<h2 id="where-to-start"><a class="header" href="#where-to-start">Where to start</a></h2>
+<h1 id="concurrent-writes"><a class="header" href="#concurrent-writes">Concurrent Writes</a></h1>
+<p>When multiple writers commit to the same table, iceberg-go uses optimistic
+concurrency control: every commit is validated against the table state it was
+built on. If another writer committed first, the commit is rejected rather than
+silently clobbering their snapshot.</p>
+<h2 id="conflict-detection"><a class="header" href="#conflict-detection">Conflict detection</a></h2>
+<p>Each producer (<code>Append</code>, <code>Overwrite</code>, <code>Delete</code>, <code>RowDelta</code>, <code>RewriteDataFiles</code>)
+runs a set of validators before the commit lands. They check that the files the
+operation assumed (added, deleted, or filtered) still match the current table
+state. A failed validation surfaces as one of:</p>
 <ul>
-<li><strong><a href="./install.html">Install</a></strong> - get the library and CLI on your machine.</li>
-<li><strong><a href="./cli.html">CLI</a></strong> - inspect tables, run maintenance, manage refs.</li>
-<li><strong><a href="./api.html">API</a></strong> - construct catalogs, scan tables, write Arrow data, evolve schemas.</li>
-<li><strong><a href="./configuration.html">Configuration</a></strong> - YAML config file, catalog options, FileIO and credentials, table properties.</li>
+<li><code>table.ErrCommitFailed</code> — the base snapshot moved on; the commit can be
+retried after refreshing (see below).</li>
+<li><code>table.ErrCommitDiverged</code> — terminal. The base snapshot is no longer on the
+branch at all, so a retry cannot reconcile the change.</li>
 </ul>
-<h2 id="what-works-today"><a class="header" href="#what-works-today">What works today</a></h2>
-<p>A capability matrix - filesystem, metadata operations, catalog support, and write operations - lives on the dedicated <strong><a href="./feature-status.html">Feature Status</a></strong> page.</p>
-<h2 id="beyond-go"><a class="header" href="#beyond-go">Beyond Go</a></h2>
-<p>Apache Iceberg is multi-language. PyIceberg, iceberg-rust, iceberg-cpp, and the Java reference implementation all target the same spec - see <strong><a href="./ecosystem.html">Other Iceberg implementations</a></strong> for cross-links.</p>
-<h2 id="help-and-contribution"><a class="header" href="#help-and-contribution">Help and contribution</a></h2>
-<ul>
-<li>Questions and discussion: <strong><a href="./community.html">Community</a></strong></li>
-<li>Contributing code or docs: <strong><a href="./contributing.html">Contributing</a></strong></li>
-<li>Cutting or verifying a release: <strong><a href="./releases.html">Releases</a></strong></li>
-</ul>
-<p>The canonical Iceberg specification, terminology, and multi-engine policy live with the main project at <a href="https://iceberg.apache.org/">iceberg.apache.org</a>. This site covers what is specific to the Go implementation.</p>
+<pre><code class="language-go">import (
+    &quot;context&quot;
+    &quot;errors&quot;
+
+    &quot;github.com/apache/iceberg-go/table&quot;
+)
+
+_, err := txn.Commit(context.Background())
+switch {
+case errors.Is(err, table.ErrCommitDiverged):
+    // unrecoverable: rebuild the operation from the latest table
+case errors.Is(err, table.ErrCommitFailed):
+    // retriable: refresh and try again (the retry loop does this for you)
+}
+</code></pre>
+<h2 id="isolation-levels"><a class="header" href="#isolation-levels">Isolation levels</a></h2>
+<p>Delete and update operations are validated under an isolation level, set per
+operation through table properties:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Property</th><th style="text-align: left">Default</th><th style="text-align: left">Values</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>write.delete.isolation-level</code></td><td style="text-align: left"><code>serializable</code></td><td style="text-align: left"><code>serializable</code>, <code>snapshot</code></td></tr>
+<tr><td style="text-align: left"><code>write.update.isolation-level</code></td><td style="text-align: left"><code>serializable</code></td><td style="text-align: left"><code>serializable</code>, <code>snapshot</code></td></tr>
+</tbody></table>
+</div>
+<p><code>serializable</code> rejects the commit if <em>any</em> concurrent snapshot added data
+matching the operation's filter. <code>snapshot</code> is more permissive — it only
+rejects when concurrent deletes touch the same files.</p>
+<h2 id="automatic-retry"><a class="header" href="#automatic-retry">Automatic retry</a></h2>
+<p>iceberg-go can refresh the table and replay the operation against the latest
+snapshot between attempts. On each retry the table metadata is reloaded, the
+producer's validators re-run against the fresh snapshot, and the commit is
+re-submitted only if it is still valid.</p>
+<p>Retry is <strong>off by default</strong> (<code>commit.retry.num-retries</code> is <code>0</code>). Opt in by
+setting the retry properties — see <a href="./configuration.html#manifest-and-commit">Manifest and commit</a>
+in the configuration reference for the full list:</p>
+<pre><code class="language-go">// Opt in to retries (e.g. 4 attempts after the first) for a contended table.
+_, err := cat.CreateTable(ctx, ident, schema,
+    catalog.WithProperties(iceberg.Properties{
+        &quot;commit.retry.num-retries&quot;: &quot;4&quot;,
+    }),
+)
+</code></pre>
+<blockquote>
+<p><strong>Catalog support:</strong> retry currently engages on the REST catalog, which wraps
+commit conflicts as <code>ErrCommitFailed</code>. The Glue, SQL, and Hive catalogs do
+not yet wrap their conflict errors, so the retry loop will not fire on them.</p>
+</blockquote>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="expression-dsl.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next prefetch" href="install.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="metrics-reporting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -269,8 +313,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="expression-dsl.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next prefetch" href="install.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="metrics-reporting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

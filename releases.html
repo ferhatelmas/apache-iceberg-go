@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - Iceberg Golang</title>
+        <title>Releases - Iceberg Golang</title>
 
 
         <!-- Custom HTML head -->
@@ -123,7 +123,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html" class="active">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="install.html">Install</a></li><li class="chapter-item expanded "><a href="getting-started.html">Getting Started</a></li><li class="chapter-item expanded "><a href="configuration.html">Configuration</a></li><li class="chapter-item expanded "><a href="cli.html">CLI</a></li><li class="chapter-item expanded "><a href="api.html">API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="row-filter-syntax.html">Row Filter Syntax</a></li><li class="chapter-item expanded "><a href="expression-dsl.html">Expression DSL</a></li><li class="chapter-item expanded "><a href="concurrent-writes.html">Concurrent Writes</a></li><li class="chapter-item expanded "><a href="metrics-reporting.html">Metrics Reporting</a></li></ol></li><li class="chapter-item expanded "><a href="feature-status.html">Feature Status</a></li><li class="chapter-item expanded affix "><li class="part-title">Developer Guide</li><li class="chapter-item expanded "><a href="contributing.html">Contributing</a></li><li class="chapter-item expanded "><a href="community.html">Community</a></li><li class="chapter-item expanded "><a href="glossary.html">Glossary</a></li><li class="chapter-item expanded affix "><li class="part-title">Releases</li><li class="chapter-item expanded "><a href="releases.html">Releases</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="verify-release.html">Verify a release</a></li><li class="chapter-item expanded "><a href="how-to-release.html">How to release</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Ecosystem</li><li class="chapter-item expanded "><a href="ecosystem.html">Other Iceberg implementations</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="install.html">Install</a></li><li class="chapter-item expanded "><a href="getting-started.html">Getting Started</a></li><li class="chapter-item expanded "><a href="configuration.html">Configuration</a></li><li class="chapter-item expanded "><a href="cli.html">CLI</a></li><li class="chapter-item expanded "><a href="api.html">API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="row-filter-syntax.html">Row Filter Syntax</a></li><li class="chapter-item expanded "><a href="expression-dsl.html">Expression DSL</a></li><li class="chapter-item expanded "><a href="concurrent-writes.html">Concurrent Writes</a></li><li class="chapter-item expanded "><a href="metrics-reporting.html">Metrics Reporting</a></li></ol></li><li class="chapter-item expanded "><a href="feature-status.html">Feature Status</a></li><li class="chapter-item expanded affix "><li class="part-title">Developer Guide</li><li class="chapter-item expanded "><a href="contributing.html">Contributing</a></li><li class="chapter-item expanded "><a href="community.html">Community</a></li><li class="chapter-item expanded "><a href="glossary.html">Glossary</a></li><li class="chapter-item expanded affix "><li class="part-title">Releases</li><li class="chapter-item expanded "><a href="releases.html" class="active">Releases</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="verify-release.html">Verify a release</a></li><li class="chapter-item expanded "><a href="how-to-release.html">How to release</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Ecosystem</li><li class="chapter-item expanded "><a href="ecosystem.html">Other Iceberg implementations</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -185,7 +185,7 @@
                         <a href="https://github.com/apache/iceberg-go" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/apache/iceberg-go/edit/main/website/src/introduction.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/apache/iceberg-go/edit/main/website/src/releases.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -232,34 +232,36 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
 -->
-<h1 id="iceberg-go"><a class="header" href="#iceberg-go">Iceberg Go</a></h1>
-<p>Apache Iceberg Go is a Go-native implementation of <a href="https://iceberg.apache.org/">Apache Iceberg</a>, the open table format for analytic datasets. Read and write Iceberg tables from Go services and tooling without a JVM.</p>
-<p><a href="https://pkg.go.dev/github.com/apache/iceberg-go"><img src="https://pkg.go.dev/badge/github.com/apache/iceberg-go.svg" alt="Go Reference" /></a></p>
-<h2 id="where-to-start"><a class="header" href="#where-to-start">Where to start</a></h2>
+<h1 id="releases"><a class="header" href="#releases">Releases</a></h1>
+<p>Apache Iceberg Go follows the standard Apache release process. Releases are cut from <code>main</code>, voted on by the Apache Iceberg PMC, and published as signed source tarballs to <code>https://downloads.apache.org/iceberg/</code> and as Go module versions tagged <code>vX.Y.Z</code>.</p>
+<h2 id="latest-release"><a class="header" href="#latest-release">Latest release</a></h2>
 <ul>
-<li><strong><a href="./install.html">Install</a></strong> - get the library and CLI on your machine.</li>
-<li><strong><a href="./cli.html">CLI</a></strong> - inspect tables, run maintenance, manage refs.</li>
-<li><strong><a href="./api.html">API</a></strong> - construct catalogs, scan tables, write Arrow data, evolve schemas.</li>
-<li><strong><a href="./configuration.html">Configuration</a></strong> - YAML config file, catalog options, FileIO and credentials, table properties.</li>
+<li><a href="https://github.com/apache/iceberg-go/releases/latest">Latest release on GitHub</a></li>
+<li>All releases: <a href="https://github.com/apache/iceberg-go/releases">github.com/apache/iceberg-go/releases</a></li>
 </ul>
-<h2 id="what-works-today"><a class="header" href="#what-works-today">What works today</a></h2>
-<p>A capability matrix - filesystem, metadata operations, catalog support, and write operations - lives on the dedicated <strong><a href="./feature-status.html">Feature Status</a></strong> page.</p>
-<h2 id="beyond-go"><a class="header" href="#beyond-go">Beyond Go</a></h2>
-<p>Apache Iceberg is multi-language. PyIceberg, iceberg-rust, iceberg-cpp, and the Java reference implementation all target the same spec - see <strong><a href="./ecosystem.html">Other Iceberg implementations</a></strong> for cross-links.</p>
-<h2 id="help-and-contribution"><a class="header" href="#help-and-contribution">Help and contribution</a></h2>
+<h2 id="using-a-release"><a class="header" href="#using-a-release">Using a release</a></h2>
+<p>Pin a tagged version directly with Go modules:</p>
+<pre><code class="language-sh">go get github.com/apache/iceberg-go@vX.Y.Z
+</code></pre>
+<p>To track <code>main</code>, use <code>@main</code> instead of a version tag.</p>
+<h2 id="release-notes"><a class="header" href="#release-notes">Release notes</a></h2>
+<p>Per-release notes (highlights, breaking changes, contributors) are published on the <a href="https://github.com/apache/iceberg-go/releases">GitHub Releases page</a>. Iceberg Go does not maintain a curated <code>CHANGELOG.md</code> in the repository; the GitHub Releases page is the canonical source.</p>
+<h2 id="verifying-and-producing-releases"><a class="header" href="#verifying-and-producing-releases">Verifying and producing releases</a></h2>
+<p>If you are validating an RC or cutting a new release, see:</p>
 <ul>
-<li>Questions and discussion: <strong><a href="./community.html">Community</a></strong></li>
-<li>Contributing code or docs: <strong><a href="./contributing.html">Contributing</a></strong></li>
-<li>Cutting or verifying a release: <strong><a href="./releases.html">Releases</a></strong></li>
+<li><a href="./verify-release.html">Verify a release</a> - what to do when a <code>[VOTE]</code> thread is posted on <code>dev@iceberg.apache.org</code>.</li>
+<li><a href="./how-to-release.html">How to release</a> - PMC/committer process for cutting an RC and publishing.</li>
 </ul>
-<p>The canonical Iceberg specification, terminology, and multi-engine policy live with the main project at <a href="https://iceberg.apache.org/">iceberg.apache.org</a>. This site covers what is specific to the Go implementation.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="glossary.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next prefetch" href="install.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="verify-release.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -269,8 +271,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="glossary.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next prefetch" href="install.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="verify-release.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
